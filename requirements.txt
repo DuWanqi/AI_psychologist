@@ -1,0 +1,11 @@
+# AI Psychologist Requirements
+
+# Core dependencies
+openai>=1.0.0  # For OpenRouter/OpenAI API integration
+chromadb>=0.4.0  # Vector database for semantic memory
+numpy>=1.21.0  # Numerical computing
+sentence-transformers>=2.2.0  # For generating embeddings
+
+# Utilities
+python-dotenv>=0.19.0  # For loading environment variables
+tqdm>=4.62.0  # Progress bars
