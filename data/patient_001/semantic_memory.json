@@ -2,6 +2,8 @@
   "user_profile": {
     "preferences": {},
     "psychological_history": [],
-    "personality_insights": {}
+    "personality_insights": {
+      "anxiety": 2
+    }
   }
 }

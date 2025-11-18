@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""
+测试向量数据库初始化
+"""
+
+import sys
+import os
+
+# 添加src目录到Python路径
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
+def test_vector_db_init():
+    """测试向量数据库初始化"""
+    print("测试向量数据库初始化...")
+    
+    try:
+        # 导入必要的模块
+        from ai_psychologist import AIPsychologist
+        print("✓ 成功导入AIPsychologist")
+        
+        # 创建AI心理学家实例
+        ai = AIPsychologist(user_id="test_user")
+        print("✓ 成功创建AIPsychologist实例")
+        
+        # 检查向量数据库是否初始化成功
+        # AIPsychologist使用MemorySystem来管理内存
+        if hasattr(ai, 'memory_system'):
+            memory_system = ai.memory_system
+            print("✓ 成功访问MemorySystem")
+            
+            # 检查MemorySystem中的collection属性
+            if hasattr(memory_system, 'collection'):
+                if memory_system.collection is not None:
+                    print("✓ 向量数据库初始化成功")
+                    return True
+                else:
+                    print("⚠️ 向量数据库未初始化或已降级")
+                    return False
+            else:
+                print("⚠️ MemorySystem对象没有collection属性")
+                # 列出所有属性来调试
+                print("MemorySystem可用属性:", [attr for attr in dir(memory_system) if not attr.startswith('_')])
+                return False
+        else:
+            print("⚠️ AIPsychologist对象没有memory_system属性")
+            # 列出所有属性来调试
+            print("AIPsychologist可用属性:", [attr for attr in dir(ai) if not attr.startswith('_')])
+            return False
+            
+    except Exception as e:
+        print(f"❌ 测试失败: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+if __name__ == "__main__":
+    print("AI心理学家向量数据库测试")
+    print("=" * 25)
+    
+    success = test_vector_db_init()
+    
+    if success:
+        print("\n🎉 向量数据库测试成功！")
+    else:
+        print("\n❌ 向量数据库测试失败。")

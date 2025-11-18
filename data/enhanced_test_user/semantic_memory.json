@@ -1,0 +1,26 @@
+{
+  "user_profile": {
+    "preferences": {
+      "interest_career": 1,
+      "communication_style": "text",
+      "preferred_time": "evening",
+      "interest_learning": 1,
+      "interest_health": 1
+    },
+    "psychological_history": [
+      {
+        "concern": "stress_and_anxiety",
+        "timestamp": 1763447647.5215862,
+        "context": "我最近在准备一个重要的工作面试，感到很焦虑。"
+      },
+      {
+        "concern": "sleep_issues",
+        "timestamp": 1763447740.0990574,
+        "context": "最近睡眠不太好，经常失眠。"
+      }
+    ],
+    "personality_insights": {
+      "anxiety": 1
+    }
+  }
+}
