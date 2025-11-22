@@ -39,15 +39,17 @@ from procedural_memory import procedural_memory
 
 class OpenRouterClient:
     def __init__(self, api_key: Optional[str] = None):
-        if OPENAI_AVAILABLE:
-            self.api_key = api_key or Config.OPENROUTER_API_KEY
+        self.api_key = api_key or Config.OPENROUTER_API_KEY
+        # 只在真正需要时才初始化客户端
+        self.client = None
+    
+    def _ensure_client_initialized(self):
+        """确保OpenAI客户端已初始化"""
+        if OPENAI_AVAILABLE and self.client is None and self.api_key:
             self.client = OpenAI(
                 base_url=Config.OPENROUTER_BASE_URL,
                 api_key=self.api_key
             )
-        else:
-            self.api_key = api_key or Config.OPENROUTER_API_KEY
-            self.client = None
     
     def chat_completion(self, messages: List[Dict[str, str]], model: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -57,27 +59,29 @@ class OpenRouterClient:
             model = Config.DEFAULT_MODEL
             
         # Use real API if available, otherwise fallback to mock
-        if OPENAI_AVAILABLE and self.client:
+        if OPENAI_AVAILABLE and self.api_key:
             try:
-                response = self.client.chat.completions.create(
-                    model=model,
-                    messages=messages
-                )
-                return {
-                    "choices": [{
-                        "message": {
-                            "role": "assistant",
-                            "content": response.choices[0].message.content
-                        }
-                    }]
-                }
+                self._ensure_client_initialized()
+                if self.client is not None:
+                    response = self.client.chat.completions.create(
+                        model=model,
+                        messages=messages
+                    )
+                    return {
+                        "choices": [{
+                            "message": {
+                                "role": "assistant",
+                                "content": response.choices[0].message.content
+                            }
+                        }]
+                    }
             except Exception as e:
                 # Fallback to mock response if API fails
                 print(f"Warning: API call failed, using mock response: {e}")
                 return self._mock_response(messages)
-        else:
-            # Use mock response if OpenAI not available
-            return self._mock_response(messages)
+        
+        # Use mock response if OpenAI not available or no API key
+        return self._mock_response(messages)
     
     def _mock_response(self, messages: List[Dict[str, str]]) -> Dict[str, Any]:
         """
@@ -208,7 +212,8 @@ class LLMClient:
     """统一的LLM客户端，支持多种模型提供商"""
     
     def __init__(self):
-        self.provider = Config.MODEL_PROVIDER.lower()
+        # 读取当前环境变量值，而不是Config类属性（因为Config类属性在模块导入时就已经确定）
+        self.provider = os.environ.get("MODEL_PROVIDER", Config.MODEL_PROVIDER).lower()
         
         if self.provider == "openrouter":
             self.client = OpenRouterClient()

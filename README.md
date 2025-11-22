@@ -1,42 +1,64 @@
-# AI Psychologist - An Empathetic Mental Health Chatbot with Long-Term Memory
+# AI Psychologist with Long-Term Memory
 
-## Overview
-
-The AI Psychologist is an intelligent mental health assistant that provides personalized psychological support with long-term memory capabilities. The system remembers user psychological profiles, preferences, and consultation history to provide continuous and tailored support.
+An AI-powered mental health assistant with long-term memory capabilities, designed to provide empathetic psychological support while maintaining user privacy through local data storage.
 
 ## Features
 
-- **Multi-layered Memory System**: Implements working memory, episodic memory, semantic memory, and external persistent memory
-- **Empathetic Conversations**: Uses a three-stage empathy model (emotion recognition, empathetic expression, strategic support)
-- **Privacy-Focused**: All data is stored locally with no external transmission
-- **Cost-Effective**: Utilizes OpenRouter's free tier models
-- **Customizable Personality**: Multiple personality options for the AI psychologist
+### ✅ Core Features
+- **Multi-layered Memory System**: Working memory, episodic memory, semantic memory, and procedural memory
+- **Empathetic Conversations**: Three-stage empathy model (emotion recognition, empathetic expression, strategic support)
+- **Personalized Interaction**: Customizable personality and communication style
+- **Local Data Storage**: All data stored locally for privacy protection
+
+### ✅ Memory Management
+- **Hierarchical Memory Organization**: Structured memory layers based on human memory models
+- **Memory Persistence**: Long-term storage using JSON files and vector databases
+- **Intelligent Retrieval**: Context-aware memory recall for personalized responses
+
+### ✅ Voice Interaction (New!)
+- **Speech-to-Text**: Offline voice recognition using Vosk API
+- **Privacy Protection**: All voice processing done locally without internet connection
+- **Multilingual Support**: Supports Chinese and other languages
 
 ## Project Structure
 
 ```
 AI_psychologist/
 ├── src/
-│   ├── __init__.py
-│   ├── main.py              # Main entry point
-│   ├── ai_psychologist.py   # Core AI psychologist implementation
-│   └── config.py            # Configuration settings
-├── data/                    # User data storage (created on first run)
-├── vector_db/               # Vector database for semantic memory (created on first run)
+│   ├── main.py              # Main application entry point
+│   ├── ai_psychologist.py   # Core AI implementation
+│   ├── config.py            # Configuration management
+│   ├── procedural_memory.py # Therapeutic techniques management
+│   └── speech_recognition.py # Voice input processing (New!)
 ├── requirements.txt         # Python dependencies
-├── .env.example             # Example environment variables
-├── README.md                # This file
-├── requirements_zh.md       # Chinese requirements document
-├── proposal.txt             # Project proposal
-└── 技术参考.txt              # Technical reference document
+├── README.md               # Comprehensive documentation
+├── requirements.md         # English requirements document
+├── requirements_zh.md      # Chinese requirements document
+├── proposal.txt            # Project proposal
+├── 技术参考.txt             # Technical reference document
+├── .env.example            # Environment variable template
+├── run.ps1                 # Windows execution script
+├── run.sh                  # Linux/macOS execution script
+├── setup.ps1               # Windows setup script
+├── setup.sh                # Linux/macOS setup script
+├── demo.py                 # Demonstration script
+└── test_installation.py    # Installation verification script
 ```
+
+## Technology Stack
+
+- **Language**: Python 3.8+
+- **AI Integration**: OpenRouter API (with fallback to mock responses)
+- **Memory Storage**: ChromaDB vector database (with file-based fallback)
+- **Voice Recognition**: Vosk API (offline speech recognition)
+- **Dependencies**: OpenAI, ChromaDB, sentence-transformers, python-dotenv, vosk, pyaudio
 
 ## Installation
 
 ### Prerequisites
 
 - Python 3.8 or higher
-- pip (Python package installer)
+- pip (Python package manager)
 
 ### Steps
 
@@ -76,7 +98,7 @@ AI_psychologist/
 
 To start a conversation with the AI Psychologist:
 ```bash
-python src/main.py
+python src/main.py --user-id your_user_id
 ```
 
 To specify a user ID (for maintaining separate memory profiles):
@@ -89,80 +111,71 @@ To reset memory for a user:
 python src/main.py --user-id your_user_id --reset-memory
 ```
 
+To enable voice input mode:
+```bash
+python src/main.py --user-id your_user_id --voice
+```
+
 ### During Conversation
 
 - Type your messages naturally as you would in a conversation with a psychologist
 - The system will remember important information from your conversations
 - Type `quit`, `exit`, or `bye` to end the session
 
+### Voice Input Mode
+
+When using the `--voice` flag:
+
+1. Press Enter to start voice input
+2. Speak clearly when prompted
+3. The system will transcribe your speech to text
+4. The AI Psychologist will respond as usual
+
 ## Configuration
 
 The application can be configured through environment variables in the `.env` file:
 
 - `OPENROUTER_API_KEY`: Your OpenRouter API key (required for real AI responses)
-- `DATA_STORAGE_PATH`: Path for storing user data (default: `./data`)
-- `VECTOR_DB_PATH`: Path for vector database storage (default: `./vector_db`)
-- `DEFAULT_MODEL`: Default model to use (default: `openrouter/auto`)
-- `WORKING_MEMORY_SIZE`: Number of recent messages to keep in working memory (default: `10`)
-- `EPISODIC_MEMORY_LIMIT`: Maximum number of episodic memories to store (default: `100`)
-
-## Memory System
-
-The AI Psychologist implements a five-layer memory system based on human memory models:
-
-1. **Working Memory**: Short-term conversation context (last N messages)
-2. **Episodic Memory**: Time-stamped events and conversation history
-3. **Semantic Memory**: Facts, knowledge, and user profiles
-4. **Procedural Memory**: Therapeutic techniques and skills
-5. **External Persistent Memory**: Long-term storage beyond session context
-
-## Development
-
-### Running the Demo
-
-The application includes a demo mode that works without an API key. When no API key is provided, the system will use mock responses based on keyword detection.
-
-### Extending Functionality
-
-Key areas for extension:
-- Enhanced emotion detection using NLP libraries
-- Integration with more sophisticated psychological knowledge bases
-- Implementation of specific therapeutic techniques (CBT, DBT, etc.)
-- Web interface development
-- Voice interaction capabilities
+- `DATA_STORAGE_PATH`: Path to store user data (default: `./data`)
+- `VECTOR_DB_PATH`: Path to store vector database (default: `./vector_db`)
+- `DEFAULT_MODEL`: Default AI model to use (default: `openrouter/auto`)
+- `WORKING_MEMORY_SIZE`: Number of recent messages to keep in working memory (default: 10)
+- `EPISODIC_MEMORY_LIMIT`: Maximum number of episodic memories to store (default: 100)
+- `THERAPEUTIC_TECHNIQUES_FILE`: Path to therapeutic techniques configuration (default: `./config/therapeutic_techniques.json`)
 
 ## Dependencies
 
 - `openai`: For OpenRouter API integration
 - `chromadb`: Vector database for semantic memory
-- `numpy`: Numerical computing
-- `sentence-transformers`: For generating embeddings
-- `python-dotenv`: Environment variable management
-- `tqdm`: Progress bars
+- `sentence-transformers`: For generating text embeddings
+- `python-dotenv`: For loading environment variables
+- `vosk`: For offline speech recognition
+- `pyaudio`: For audio input processing
 
-## Privacy and Security
+## Future Enhancements
 
-- All data is stored locally on the user's device
-- No personal information is transmitted to external servers
-- User data is stored in plain JSON files in the `data/` directory
-- Memory files can be manually deleted for complete data removal
+1. **Advanced Emotion Detection**: Integration with NLP libraries for better sentiment analysis
+2. **Therapeutic Technique Integration**: Implementation of CBT, DBT, and other evidence-based methods
+3. **Web Interface**: Development of a user-friendly web frontend
+4. **Voice Interaction**: Speech-to-text and text-to-speech capabilities
+5. **Multi-Language Support**: Expansion to support multiple languages
 
-## Troubleshooting
+## Educational Value
 
-### Common Issues
-
-1. **API Key Error**: Make sure you have a valid OpenRouter API key in your `.env` file
-2. **Import Errors**: Ensure all dependencies are installed with `pip install -r requirements.txt`
-3. **Memory Issues**: If experiencing memory problems, try resetting user memory with the `--reset-memory` flag
-
-### Getting Help
-
-If you encounter issues not covered in this README, please check the issue tracker or contact the development team.
+This project demonstrates:
+- Advanced AI application development
+- Memory system design and implementation
+- Privacy-preserving AI systems
+- Modular software architecture
+- Cross-platform deployment strategies
 
 ## License
 
-This project is for educational and research purposes. It is not intended to replace professional mental health services.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Disclaimer
+## Acknowledgments
 
-This AI Psychologist is not a licensed therapist and should not be used as a substitute for professional mental health care. If you are experiencing a mental health emergency, please contact emergency services or a crisis helpline immediately.
+- OpenRouter for providing accessible AI models
+- ChromaDB for vector database technology
+- Vosk for offline speech recognition
+- Sentence Transformers for embedding generation

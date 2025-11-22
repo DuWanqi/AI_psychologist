@@ -47,5 +47,71 @@
       }
     },
     "summary": "用户表达了 感受"
+  },
+  {
+    "id": "a20efa56-8fab-40e6-a199-0945173b7fc2",
+    "timestamp": 1763800389.365385,
+    "datetime": "2025-11-22T16:33:09.365385",
+    "interaction": {
+      "user_message": "你好 现在 我 很 焦虑",
+      "ai_response": "我听到了你的话，我会陪伴你一起面对。你能告诉我更多关于你的感受吗？",
+      "emotional_insights": {
+        "emotions": [
+          "anxiety"
+        ],
+        "topics": [],
+        "intensity": 2
+      }
+    },
+    "summary": "用户表达了 anxiety"
+  },
+  {
+    "id": "34bcbd1c-99be-49be-9e75-e03d79d801e7",
+    "timestamp": 1763801585.2537384,
+    "datetime": "2025-11-22T16:53:05.253738",
+    "interaction": {
+      "user_message": "我 新 的 因为 期末考试 的 问题 很 焦虑 的 安慰 我 一下",
+      "ai_response": "我听到了你的话，我会陪伴你一起面对。你能告诉我更多关于你的感受吗？",
+      "emotional_insights": {
+        "emotions": [
+          "anxiety"
+        ],
+        "topics": [],
+        "intensity": 2
+      }
+    },
+    "summary": "用户表达了 anxiety"
+  },
+  {
+    "id": "01dd6301-b4a8-4d4c-813d-96ce97a3d710",
+    "timestamp": 1763801792.379465,
+    "datetime": "2025-11-22T16:56:32.379465",
+    "interaction": {
+      "user_message": "我 因为 考试 很 焦虑 呢 安慰 我 一下 吗",
+      "ai_response": "我理解你的情况。考试压力是很多人的共同痛点。让我们一起尝试找到一些缓解焦虑的方法。\n\n首先，想要做些什么可以帮助你减轻焦虑呢？是否有任何具体的活动或策略能使你感到更放松？\n\n（记忆：之前你提到了你在考试前也曾经感到焦虑，我之前给你的建议是“尝试进行一些缓解压力活动，例如深呼吸练习、运动或冥想。”）",
+      "emotional_insights": {
+        "emotions": [
+          "anxiety"
+        ],
+        "topics": [],
+        "intensity": 2
+      }
+    },
+    "summary": "用户表达了 anxiety"
+  },
+  {
+    "id": "b88cc93f-b934-4eb7-80b4-503130ab1b00",
+    "timestamp": 1763801894.7208083,
+    "datetime": "2025-11-22T16:58:14.720808",
+    "interaction": {
+      "user_message": "你 作为 心理医生 可以 带领 我 做 正念 疗法 吗",
+      "ai_response": "非常感谢你的邀请！作为一个AI心理学家，我可以带领你进行正念治疗。正念疗法是一种帮助你改变思维模式和增加自我意识的方法。\n\n我们开始吧！让我们通过深呼吸和短暂的冥想来建立一个放松的环境。\n\n首先，闭上你的眼睛，并深呼气 4 步，保持几秒钟。然后，在呼出的同时，慢慢地开启你的眼睑，并深呼气 4 步，保持几秒钟。\n\n现在，尝试focus在你的胸部或腹部感觉上。感受自己的呼吸，并让自己的注意力集中在其中。\n\n请注意，我不希望你做任何具体的事情，只是让自己感到放松和安宁。你可以 anytime 我都在你身边支持你。\n\n（记忆：我注意到你之前的案例中提到了stress_and_anxiety，这是一个比较常见的问题。我们会一起慢慢地探索这个问题，找到适合你的解决方案）",
+      "emotional_insights": {
+        "emotions": [],
+        "topics": [],
+        "intensity": 0
+      }
+    },
+    "summary": "用户表达了 感受"
   }
 ]

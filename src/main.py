@@ -35,6 +35,10 @@ def main():
     parser.add_argument("--user-id", required=True, help="User ID for memory isolation")
     parser.add_argument("--model", choices=["openrouter", "ollama"], 
                        help="Model provider to use (openrouter or ollama)")
+    parser.add_argument("--voice", action="store_true",
+                       help="Enable voice input mode")
+    parser.add_argument("--voice-model", type=str, default=None,
+                       help="Path to Vosk voice model (e.g., models/vosk-model-small-cn-0.22)")
     
     args = parser.parse_args()
     
@@ -55,26 +59,69 @@ def main():
     print(f"Welcome to the AI Psychologist (使用 {model_info} 模型). Type 'quit' to exit.")
     print("=" * 50)
     
-    while True:
+    # Initialize speech recognizer (if voice mode is enabled)
+    speech_recognizer = None
+    if args.voice:
         try:
-            user_input = input("\nYou: ").strip()
-            
-            if user_input.lower() in ['quit', 'exit', '再见', '退出']:
-                print("\nAI Psychologist: Take care! Feel free to come back anytime you need support.")
-                break
-            
-            if user_input:
-                response = psychologist.chat(user_input)
-                print(f"\nAI Psychologist: {response}")
-                
-        except KeyboardInterrupt:
-            print("\n\nAI Psychologist: Take care! Feel free to come back anytime you need support.")
-            break
+            from speech_recognition import SpeechRecognition
+            # Use specified model path or None for default
+            model_path = args.voice_model if args.voice_model and os.path.exists(args.voice_model) else None
+            speech_recognizer = SpeechRecognition(model_path)
+            if model_path:
+                print(f"语音输入模式已启用，使用模型: {model_path}")
+            else:
+                print("语音输入模式已启用，使用默认模型")
+        except ImportError as e:
+            print(f"语音识别模块导入失败: {e}")
+            print("将使用文本输入模式")
+            args.voice = False
         except Exception as e:
-            print(f"\nAn error occurred: {str(e)}")
-            print("Please try again or restart the application.")
-            # 打印完整的错误堆栈以便调试
-            traceback.print_exc()
+            print(f"语音识别初始化失败: {e}")
+            print("将使用文本输入模式")
+            args.voice = False
+    
+    try:
+        while True:
+            try:
+                if args.voice and speech_recognizer:
+                    print("\n按回车键开始语音输入（或输入'quit'退出）:")
+                    user_input = input().strip()
+                    
+                    if user_input.lower() in ['quit', 'exit', '再见', '退出']:
+                        break
+                    
+                    # Use speech recognition
+                    user_input = speech_recognizer.recognize_from_microphone()
+                    if user_input:
+                        print(f"识别结果: {user_input}")
+                    else:
+                        print("未识别到语音，请重试")
+                        continue
+                else:
+                    user_input = input("\nYou: ").strip()
+                    
+                    if user_input.lower() in ['quit', 'exit', '再见', '退出']:
+                        break
+                
+                if user_input:
+                    response = psychologist.chat(user_input)
+                    print(f"\nAI Psychologist: {response}")
+                    
+            except KeyboardInterrupt:
+                print("\n\nAI Psychologist: Take care! Feel free to come back anytime you need support.")
+                break
+            except Exception as e:
+                print(f"\nAn error occurred: {str(e)}")
+                print("Please try again or restart the application.")
+                # 打印完整的错误堆栈以便调试
+                traceback.print_exc()
+    finally:
+        # Clean up resources
+        if speech_recognizer:
+            try:
+                speech_recognizer.close()
+            except:
+                pass
 
 if __name__ == "__main__":
     main()

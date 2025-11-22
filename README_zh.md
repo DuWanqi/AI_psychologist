@@ -1,46 +1,64 @@
-# AI心理学家 - 拥有长期记忆的共情心理健康聊天机器人
+# AI心理学家 - 具有长期记忆的心理健康助手
 
-## 项目概述
-
-AI心理学家是一个智能心理健康助手，提供个性化的心理咨询服 务，具备长期记忆能力。系统将记住用户的心理档案、偏好和咨询历史，以提供持续且量身定制的支持。
+一个具有长期记忆功能的AI心理健康助手，旨在提供富有同理心的心理支持，同时通过本地数据存储保护用户隐私。
 
 ## 功能特性
 
-- **多层次记忆系统**：实现工作记忆、情景记忆、语义记忆和外部持久记忆
-- **共情对话**：使用三阶段共情模型（情绪识别、共情表达、策略性支持）
-- **隐私保护**：所有数据本地存储，无外部传输
-- **成本效益**：利用OpenRouter免费层模型
-- **可定制人格**：AI心理学家的多种人格选项
+### ✅ 核心功能
+- **多层记忆系统**：工作记忆、情景记忆、语义记忆和程序性记忆
+- **共情对话**：三阶段共情模型（情绪识别、共情表达、策略性支持）
+- **个性化交互**：可定制的人格和沟通风格
+- **本地数据存储**：所有数据本地存储以保护隐私
+
+### ✅ 记忆管理
+- **分层记忆组织**：基于人类记忆模型的结构化记忆层
+- **记忆持久化**：使用JSON文件和向量数据库进行长期存储
+- **智能检索**：基于上下文的记忆调用以实现个性化响应
+
+### ✅ 语音交互（新增！）
+- **语音转文本**：使用Vosk API进行离线语音识别
+- **隐私保护**：所有语音处理都在本地进行，无需网络连接
+- **多语言支持**：支持中文等多种语言
 
 ## 项目结构
 
 ```
 AI_psychologist/
-├── config/
-│   └── therapeutic_techniques.json     # 预设的治疗技术（程序性记忆）
 ├── src/
-│   ├── __init__.py
-│   ├── main.py                         # 主入口点
-│   ├── ai_psychologist.py              # 核心AI心理学家实现
-│   ├── config.py                       # 配置设置
-│   └── procedural_memory.py            # 程序性记忆管理
-├── data/                               # 用户数据存储（首次运行时创建）
-├── vector_db/                          # 语义记忆的向量数据库（首次运行时创建）
-├── requirements.txt                    # Python依赖
-├── .env.example                        # 环境变量示例
-├── README.md                          # 英文说明文档
-├── README_zh.md                       # 本中文说明文档
-├── requirements_zh.md                 # 中文需求文档
-├── proposal.txt                       # 项目提案
-└── 技术参考.txt                        # 技术参考文档
+│   ├── main.py              # 主应用程序入口点
+│   ├── ai_psychologist.py   # 核心AI实现
+│   ├── config.py            # 配置管理
+│   ├── procedural_memory.py # 治疗技术管理
+│   └── speech_recognition.py # 语音输入处理（新增！）
+├── requirements.txt         # Python依赖
+├── README.md               # 英文综合文档
+├── requirements.md         # 英文需求文档
+├── requirements_zh.md      # 中文需求文档
+├── proposal.txt            # 项目提案
+├── 技术参考.txt             # 技术参考文档
+├── .env.example            # 环境变量模板
+├── run.ps1                 # Windows执行脚本
+├── run.sh                  # Linux/macOS执行脚本
+├── setup.ps1               # Windows设置脚本
+├── setup.sh                # Linux/macOS设置脚本
+├── demo.py                 # 演示脚本
+└── test_installation.py    # 安装验证脚本
 ```
+
+## 技术栈
+
+- **语言**：Python 3.8+
+- **AI集成**：OpenRouter API（带模拟响应的后备方案）
+- **记忆存储**：ChromaDB向量数据库（带基于文件的后备方案）
+- **语音识别**：Vosk API（离线语音识别）
+- **依赖**：OpenAI, ChromaDB, sentence-transformers, python-dotenv, vosk, pyaudio
 
 ## 安装说明
 
-### 环境要求
+### 先决条件
 
-- Python 3.8 或更高版本
-- pip (Python包管理器)
+- Python 3.8或更高版本
+- pip（Python包管理器）
 
 ### 安装步骤
 
@@ -80,7 +98,7 @@ AI_psychologist/
 
 启动与AI心理学家的对话：
 ```bash
-python src/main.py
+python src/main.py --user-id your_user_id
 ```
 
 指定用户ID（用于维护独立的记忆档案）：
@@ -93,192 +111,71 @@ python src/main.py --user-id your_user_id
 python src/main.py --user-id your_user_id --reset-memory
 ```
 
+启用语音输入模式：
+```bash
+python src/main.py --user-id your_user_id --voice
+```
+
 ### 对话过程中
 
 - 像与心理学家对话一样自然地输入消息
 - 系统将记住您对话中的重要信息
 - 输入`quit`、`exit`或`bye`结束会话
 
+### 语音输入模式
+
+使用`--voice`标志时：
+
+1. 按回车键开始语音输入
+2. 在提示时清晰地说话
+3. 系统会将您的语音转录为文本
+4. AI心理学家会像平常一样回应
+
 ## 配置说明
 
 应用程序可以通过`.env`文件中的环境变量进行配置：
 
-- `OPENROUTER_API_KEY`：您的OpenRouter API密钥（获取真实AI响应所需）
-- `DATA_STORAGE_PATH`：用户数据存储路径（默认：`./data`）
-- `VECTOR_DB_PATH`：向量数据库存储路径（默认：`./vector_db`）
-- `DEFAULT_MODEL`：默认使用的模型（默认：`openrouter/auto`）
-- `WORKING_MEMORY_SIZE`：工作记忆中保留的最近消息数量（默认：`10`）
-- `EPISODIC_MEMORY_LIMIT`：存储的情景记忆最大数量（默认：`100`）
-- `THERAPEUTIC_TECHNIQUES_FILE`：治疗技术配置文件路径（默认：`./config/therapeutic_techniques.json`）
-
-## 程序性记忆（开发者指南）
-
-### 治疗技术配置
-
-程序性记忆通过 `./config/therapeutic_techniques.json` 文件管理预设的治疗技术和案例。这些是开发者事先预设好的，与具体用户无关。
-
-### 配置文件结构
-
-```json
-{
-  "技术名称": {
-    "description": "技术描述",
-    "steps": [
-      "步骤1",
-      "步骤2",
-      "步骤3"
-    ],
-    "examples": [
-      {
-        "scenario": "应用场景描述",
-        "response": "示例回应"
-      }
-    ]
-  }
-}
-```
-
-### 如何添加新的治疗技术
-
-1. 打开 `./config/therapeutic_techniques.json` 文件
-2. 按照现有格式添加新的治疗技术
-3. 保存文件
-4. 重新启动应用程序或重新加载配置
-
-### 示例
-
-```json
-{
-  "解决问题疗法": {
-    "description": "通过系统化方法识别和解决生活中的问题",
-    "steps": [
-      "明确问题",
-      "生成可能的解决方案",
-      "评估每个方案的优缺点",
-      "选择并实施最佳方案",
-      "评估结果并调整"
-    ],
-    "examples": [
-      {
-        "scenario": "用户在工作和家庭之间难以平衡",
-        "response": "让我们先明确你面临的具体平衡问题，然后一起探讨可能的解决方案。"
-      }
-    ]
-  }
-}
-```
-
-### 测试程序性记忆
-
-运行测试脚本验证程序性记忆系统：
-```bash
-python test_procedural_memory.py
-```
-
-## 记忆系统实现
-
-AI心理学家实现了基于人类记忆模型的五层记忆系统：
-
-1. **工作记忆**：短期对话上下文（最近N条消息）
-2. **情景记忆**：带时间戳的事件和对话历史
-3. **语义记忆**：事实、知识和用户档案
-4. **程序性记忆**：咨询技巧和技能
-5. **外部持久记忆**：超越会话上下文的长期存储
-
-## 技术实现细节
-
-### 记忆层实现
-
-#### 工作记忆 (Working Memory)
-- 实现为最近对话消息的缓冲区
-- 默认保留最近10条消息
-- 在每次对话中作为上下文传递给AI模型
-
-#### 情景记忆 (Episodic Memory)
-- 存储带时间戳的用户交互和事件记录
-- 使用JSON文件进行持久化存储
-- 集成向量数据库(ChromaDB)进行语义搜索
-
-#### 语义记忆 (Semantic Memory)
-- 存储与时间无关的知识、事实和用户档案
-- 使用向量数据库存储用户偏好和事实
-- 支持基于语义相似性的记忆检索
-
-#### 程序性记忆 (Procedural Memory)
-- 存储预设的治疗技术和案例
-- 通过配置文件管理，便于开发者维护
-- 在对话中作为系统提示提供给AI模型
-
-#### 外部持久记忆 (External Persistent Memory)
-- 超出会话上下文的长期存储
-- 使用文件系统和向量数据库结合
-- 支持无限扩展的记忆存储
-
-### 共情模型实现
-
-采用三阶段共情模型：
-
-1. **情绪识别**：从用户输入中检测情绪状态
-2. **共情表达**：生成理解和验证性回应
-3. **策略性支持**：提供适当的应对策略和资源
-
-### 上下文构建
-
-在每次用户输入时，系统会：
-
-1. 从工作记忆中获取最近的对话上下文
-2. 从程序性记忆中获取相关的治疗技术
-3. 从情景记忆中检索相关的历史对话
-4. 从语义记忆中获取用户档案信息
-5. 构建完整的上下文传递给AI模型
-
-## 开发说明
-
-### 运行演示
-
-应用程序包含一个无需API密钥的演示模式。当未提供API密钥时，系统将使用基于关键词检测的模拟响应。
-
-### 功能扩展
-
-可扩展的关键领域：
-- 使用NLP库增强情绪检测
-- 集成更复杂的心理学知识库
-- 实现特定的治疗技术（CBT、DBT等）
-- 开发Web界面
-- 实现语音交互功能
+- `OPENROUTER_API_KEY`：您的OpenRouter API密钥（用于真实的AI响应）
+- `DATA_STORAGE_PATH`：存储用户数据的路径（默认：`./data`）
+- `VECTOR_DB_PATH`：存储向量数据库的路径（默认：`./vector_db`）
+- `DEFAULT_MODEL`：要使用的默认AI模型（默认：`openrouter/auto`）
+- `WORKING_MEMORY_SIZE`：工作记忆中保留的最近消息数（默认：10）
+- `EPISODIC_MEMORY_LIMIT`：存储的情景记忆最大数量（默认：100）
+- `THERAPEUTIC_TECHNIQUES_FILE`：治疗技术配置的路径（默认：`./config/therapeutic_techniques.json`）
 
 ## 依赖说明
 
 - `openai`：用于OpenRouter API集成
-- `chromadb`：语义记忆的向量数据库
-- `numpy`：数值计算
-- `sentence-transformers`：生成嵌入向量
-- `python-dotenv`：环境变量管理
-- `tqdm`：进度条
+- `chromadb`：用于语义记忆的向量数据库
+- `sentence-transformers`：用于生成文本嵌入
+- `python-dotenv`：用于加载环境变量
+- `vosk`：用于离线语音识别
+- `pyaudio`：用于音频输入处理
 
-## 隐私与安全
+## 可扩展功能
 
-- 所有数据都存储在用户的本地设备上
-- 不向外部服务器传输个人信息
-- 用户数据以纯JSON文件形式存储在`data/`目录中
-- 可手动删除记忆文件以实现完全数据清除
+1. **高级情绪检测**：集成NLP库以实现更好的情感分析
+2. **治疗技术集成**：实现CBT、DBT等基于证据的方法
+3. **Web界面**：开发用户友好的Web前端
+4. **语音交互**：语音转文本和文本转语音功能
+5. **多语言支持**：扩展以支持多种语言
 
-## 故障排除
+## 教育价值
 
-### 常见问题
-
-1. **API密钥错误**：确保在`.env`文件中有有效的OpenRouter API密钥
-2. **导入错误**：使用`pip install -r requirements.txt`确保所有依赖已安装
-3. **内存问题**：如果遇到内存问题，请尝试使用`--reset-memory`标志重置用户记忆
-
-### 获取帮助
-
-如果遇到此README中未涵盖的问题，请查看问题跟踪器或联系开发团队。
+本项目展示了：
+- 高级AI应用开发
+- 记忆系统设计与实现
+- 隐私保护的AI系统
+- 模块化软件架构
+- 跨平台部署策略
 
 ## 许可证
 
-本项目仅供教育和研究目的。不应替代专业的心理健康服务。
+本项目采用MIT许可证 - 详见LICENSE文件了解详情。
 
-## 免责声明
+## 致谢
 
-此AI心理学家不是持牌治疗师，不应作为专业心理健康护理的替代品。如果您正在经历心理健康紧急情况，请立即联系紧急服务或危机热线。
+- OpenRouter提供可访问的AI模型
+- ChromaDB提供向量数据库技术
+- Vosk提供离线语音识别
+- Sentence Transformers提供嵌入生成

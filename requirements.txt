@@ -9,3 +9,7 @@ sentence-transformers>=2.2.0  # For generating embeddings
 # Utilities
 python-dotenv>=0.19.0  # For loading environment variables
 tqdm>=4.62.0  # Progress bars
+
+# Speech recognition
+vosk>=0.3.42  # Vosk speech recognition API
+pyaudio>=0.2.11  # Audio input processing

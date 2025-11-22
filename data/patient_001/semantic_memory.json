@@ -1,9 +1,27 @@
 {
   "user_profile": {
-    "preferences": {},
-    "psychological_history": [],
+    "preferences": {
+      "interest_learning": 2
+    },
+    "psychological_history": [
+      {
+        "concern": "stress_and_anxiety",
+        "timestamp": 1763800389.4104385,
+        "context": "你好 现在 我 很 焦虑"
+      },
+      {
+        "concern": "stress_and_anxiety",
+        "timestamp": 1763801585.2965887,
+        "context": "我 新 的 因为 期末考试 的 问题 很 焦虑 的 安慰 我 一下"
+      },
+      {
+        "concern": "stress_and_anxiety",
+        "timestamp": 1763801792.4420028,
+        "context": "我 因为 考试 很 焦虑 呢 安慰 我 一下 吗"
+      }
+    ],
     "personality_insights": {
-      "anxiety": 2
+      "anxiety": 5
     }
   }
 }
